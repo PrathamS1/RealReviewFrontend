@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { uploadImage } from "../services/imageService";
 import Toast from "./Toast";
@@ -72,9 +72,9 @@ function UploadModal({ isOpen, onClose, onSubmit }) {
       const response = await uploadImage(formDataToSend);
       setSuccess(true);
       onSubmit(response);
-      setTimeout(() => {
-        onClose();
-      }, 1500);
+      // setTimeout(() => {
+      //   onClose();
+      // }, 1500);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to upload image. Please try again.");
     } finally {

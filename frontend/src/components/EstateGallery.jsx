@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import UploadModal from "./UploadModal";
 import Toast from "./Toast";
@@ -13,8 +13,10 @@ function EstateGallery() {
   const { images, loading, error, refresh, deleteImage } = useImages();
   const [deleteError, setDeleteError] = useState(null);
   console.log("Images in EstateGallery: ", images);
+  console.log("Upload modal open: ", isModalOpen);
 
   const handleUpload = async (newEstate) => {
+    setIsModalOpen(false);
     await refresh();
   };
 
@@ -29,7 +31,7 @@ function EstateGallery() {
       setIsDeleteModalOpen(false);
       setSelectedImage(null);
     } catch (err) {
-      setDeleteError("Failed to delete image. Please try again."+err.message);
+      setDeleteError("Failed to delete image. Please try again." + err.message);
       setTimeout(() => setDeleteError(null), 3000);
     }
   };
@@ -95,7 +97,15 @@ function EstateGallery() {
             Upload First Estate
           </motion.button>
         </div>
+        {isModalOpen && (
+          <UploadModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSubmit={handleUpload}
+          />
+        )}
       </div>
+
     );
   }
 
@@ -180,12 +190,13 @@ function EstateGallery() {
         Upload Image
       </motion.button>
 
-      <UploadModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleUpload}
-      />
-
+      {isModalOpen && (
+        <UploadModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleUpload}
+        />
+      )}
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={handleDeleteCancel}
