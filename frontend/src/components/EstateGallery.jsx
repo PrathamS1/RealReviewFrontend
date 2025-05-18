@@ -77,7 +77,6 @@ function EstateGallery() {
     );
   }
 
-  // Ensure images is an array and has items
   const imageList = Array.isArray(images) ? images : [];
 
   if (imageList.length === 0) {

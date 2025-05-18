@@ -1,4 +1,3 @@
-// src/services/imageService.js
 import axios from 'axios';
 import ImageAPI from '../constants/apiRoutes';
 
@@ -12,7 +11,6 @@ export const uploadImage = async (formData) => {
 };
 
 export const getAllImages = async () => {
-  console.log("Trying to fetch images in service using url: ", ImageAPI.getAll);
   const response = await axios.get(ImageAPI.getAll);
   return response.data;
 };

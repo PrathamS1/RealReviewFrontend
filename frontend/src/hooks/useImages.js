@@ -1,4 +1,3 @@
-// src/hooks/useImages.js
 import { useEffect, useState } from 'react';
 import { getAllImages, deleteImage } from '../services/imageService';
 
@@ -18,10 +17,7 @@ const useImages = () => {
   const fetchImages = async () => {
     setLoading(true);
     try {
-      console.log("Trying to fetch images in hook...");
       const data = await getAllImages();
-      console.log("Fetched images: ", data);
-      // Ensure data is an array and transform if needed
       const imagesArray = normalizeData(data);
 
       setImages(imagesArray);
