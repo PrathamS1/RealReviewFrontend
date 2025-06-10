@@ -171,7 +171,7 @@ function UploadModal({ isOpen, onClose, onSubmit }) {
 
                 <div>
                   <label htmlFor="rating" className="block text-sm font-medium text-[#6B7280] mb-1">
-                    Rating (Optional)
+                    Rating
                   </label>
                   <input
                     type="number"
@@ -183,6 +183,7 @@ function UploadModal({ isOpen, onClose, onSubmit }) {
                     min="0"
                     max="5"
                     step="0.1"
+                    required
                   />
                 </div>
               </div>

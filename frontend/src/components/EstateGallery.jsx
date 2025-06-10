@@ -3,17 +3,17 @@ import { useState } from "react";
 import UploadModal from "./UploadModal";
 import Toast from "./Toast";
 import ConfirmationModal from "./ConfirmationModal";
+import RatingModal from "./RatingModal";
 import useImages from "../hooks/useImages";
-const backendBaseURL = import.meta.env.VITE_BACKEND_URL_DEV;
+import S3Image from "./S3Image";
 
 function EstateGallery() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const { images, loading, error, refresh, deleteImage } = useImages();
   const [deleteError, setDeleteError] = useState(null);
-  console.log("Images in EstateGallery: ", images);
-  console.log("Upload modal open: ", isModalOpen);
 
   const handleUpload = async (newEstate) => {
     setIsModalOpen(false);
@@ -39,6 +39,11 @@ function EstateGallery() {
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
     setSelectedImage(null);
+  };
+
+  const handleRateClick = (estate) => {
+    setSelectedImage(estate);
+    setIsRatingModalOpen(true);
   };
 
   if (loading) {
@@ -104,7 +109,6 @@ function EstateGallery() {
           />
         )}
       </div>
-
     );
   }
 
@@ -125,10 +129,10 @@ function EstateGallery() {
             className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl"
           >
             <div className="relative">
-              <img
-                src={`${backendBaseURL}/imageUploads/${estate.filename}`}
-                alt={estate.location || 'Estate image'}
+              <S3Image
+                imageKey={estate.filename}
                 className="w-full h-64 object-cover"
+                alt={estate.location || 'Estate image'}
               />
               {estate.rating && (
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
@@ -160,9 +164,10 @@ function EstateGallery() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleRateClick(estate)}
                   className="text-[#3B82F6] font-medium hover:text-[#3B82F6]/90 transition-colors"
                 >
-                  View Details
+                  Rate
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -196,6 +201,16 @@ function EstateGallery() {
           onSubmit={handleUpload}
         />
       )}
+
+      {isRatingModalOpen && selectedImage && (
+        <RatingModal
+          isOpen={isRatingModalOpen}
+          onClose={() => setIsRatingModalOpen(false)}
+          imageId={selectedImage.id}
+          imageLocation={selectedImage.location}
+        />
+      )}
+
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={handleDeleteCancel}

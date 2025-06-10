@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ImageAPI from '../constants/apiRoutes';
+import {ImageAPI} from '../constants/apiRoutes';
 
 export const uploadImage = async (formData) => {
   const response = await axios.post(ImageAPI.create, formData, {
